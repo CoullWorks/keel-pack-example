@@ -1,0 +1,59 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: pack
+      # keel is a sibling checkout so the pack is validated against real keel
+      # source — a pack has no binary of its own, so its "build" is proving it
+      # loads and validates in a freshly built keel, exactly as a user's
+      # `keel recipes validate` does.
+      - uses: actions/checkout@v4
+        with:
+          repository: coullworks/keel
+          path: keel
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.24"
+      - name: build keel
+        working-directory: keel
+        env:
+          GOTOOLCHAIN: auto
+        run: go build -o keel ./cmd/keel
+      - name: validate the pack
+        run: keel/keel recipes validate pack
+      - name: manifest + recipes sanity
+        run: |
+          python3 - <<'PY'
+          import glob, yaml
+          m = yaml.safe_load(open("pack/keel.pack.yaml"))
+          for f in ("schema_version", "name", "version"):
+              assert m.get(f), f"keel.pack.yaml missing {f}"
+          recs = glob.glob("pack/recipes/*.yaml") + glob.glob("pack/recipes/*.yml")
+          assert recs, "no recipes in the pack"
+          for r in recs:
+              d = yaml.safe_load(open(r))
+              assert d.get("id") and d.get("kind"), f"{r} missing id/kind"
+          print("pack OK:", m["name"], m["version"], f"({len(recs)} recipes)")
+          PY
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: bundle the pack
+        run: tar czf keel-pack-example.tar.gz keel.pack.yaml recipes hooks README.md
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: keel-pack-example.tar.gz

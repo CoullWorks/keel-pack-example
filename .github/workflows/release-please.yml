@@ -1,0 +1,20 @@
+name: release-please
+
+# Auto-versioning from Conventional Commits. The pack is data (no Go module), so
+# it uses the "simple" strategy: release-please maintains a release PR whose merge
+# tags the version and triggers the release job in ci.yml.
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        with:
+          release-type: simple

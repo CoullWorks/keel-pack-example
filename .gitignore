@@ -1,0 +1,7 @@
+# internal working notes + reviews (never in the public repo)
+**/.claude/
+# a keel binary built locally for `keel recipes validate .`
+/keel
+/go.work
+/go.work.sum
+*.tar.gz
