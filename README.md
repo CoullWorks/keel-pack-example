@@ -9,6 +9,13 @@
   <a href="https://github.com/coullworks/keel">⚓ built for keel</a> · <a href="LICENSE">MIT</a>
 </p>
 
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT"></a>
+  <a href="https://github.com/coullworks/keel-pack-example/releases/latest"><img src="https://img.shields.io/github/v/release/coullworks/keel-pack-example?label=version&color=ff6a2c" alt="latest release"></a>
+  <a href="https://github.com/coullworks/keel-pack-example/actions"><img src="https://img.shields.io/github/actions/workflow/status/coullworks/keel-pack-example/ci.yml?label=CI" alt="CI"></a>
+  <a href="https://github.com/coullworks/keel"><img src="https://img.shields.io/badge/built%20for-keel-ff6a2c" alt="built for keel"></a>
+</p>
+
 ---
 
 This repository is both a working keel **recipe pack** and its specification.
@@ -152,6 +159,18 @@ Every file a recipe drops carries a `# keel-generated` (or
 is what a future `keel update` / `keel recipes remove` uses to refresh or clean
 pack-dropped files without clobbering your edits. Keep it on every `files:` entry.
 
+## Support
+
+This example is free and MIT, like keel itself. If it saved you time,
+you can sponsor the work at [github.com/sponsors/coullworks](https://github.com/sponsors/coullworks).
+
 ## License
 
 [MIT](LICENSE) © CoullWorks
+
+---
+
+<p align="center">
+  <a href="https://coullworks.com"><b>⚓ Powered by CoullWorks</b></a><br>
+  <sub>Built in the open by <a href="https://coullworks.com">CoullWorks</a> — web &amp; software engineering. <a href="https://coullworks.com">coullworks.com</a></sub>
+</p>
